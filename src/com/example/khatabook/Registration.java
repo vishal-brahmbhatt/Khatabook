@@ -1,51 +1,22 @@
 package com.example.khatabook;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
-public class Login extends Activity {
+public class Registration extends Activity {
 
-	TextView tv_gotoreg;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
-		
-		
-		// Assign of value to Activity objects
-		tv_gotoreg = (TextView)findViewById(R.id.tv_goto_reg);
-		
-		
-		
-		// Operations on Activity 
-		
-		
-		////////////////////// tv_gotoreg //////////////////////////////
-		tv_gotoreg.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				 Intent registrationIntent = new Intent(Login.this,Registration.class);
-				 Login.this.startActivity(registrationIntent);
-				 Login.this.finish();
-			}
-		});
-		
-		
-		
+		setContentView(R.layout.activity_registration);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.login, menu);
+		getMenuInflater().inflate(R.menu.registration, menu);
 		return true;
 	}
 
