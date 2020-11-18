@@ -1,5 +1,7 @@
 package com.example.khatabook;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +20,21 @@ public class SplashScreen extends Activity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(SplashScreen.this,Login.class);
-                SplashScreen.this.startActivity(mainIntent);
-                SplashScreen.this.finish();
+            	
+            	File file = new File("khatabook_udata.txt");
+				if(file.exists())    
+				{
+					Intent loginIntent = new Intent(SplashScreen.this, Dashboard.class);
+					SplashScreen.this.startActivity(loginIntent);
+					SplashScreen.this.finish();
+
+				}
+				else
+				{
+	                Intent mainIntent = new Intent(SplashScreen.this,Login.class);
+	                SplashScreen.this.startActivity(mainIntent);
+	                SplashScreen.this.finish();
+				}
             }
         }, SPLASH_DISPLAY_LENGTH);
 	}

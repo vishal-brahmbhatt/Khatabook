@@ -8,9 +8,36 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.khatabook.ViewCustomer" >
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical"
+        android:id="@+id/linearlayout1"
+         >                
+
+        <Button
+            android:id="@+id/btn_goto_custadd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edge_btn"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="+ Add new Customer"
+            android:textColor="@android:color/white"
+            />
+        
+    </LinearLayout>
+    
+    <ListView
+      android:layout_below="@+id/linearlayout1"
+      android:id="@+id/lv_custview"
+      android:layout_marginTop="5dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" >
+   </ListView>
 
 </RelativeLayout>
