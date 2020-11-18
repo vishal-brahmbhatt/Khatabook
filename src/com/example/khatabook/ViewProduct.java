@@ -1,22 +1,20 @@
 package com.example.khatabook;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,68 +23,56 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ListView;
 
-public class AddCustomer extends Activity {
+public class ViewProduct extends Activity {
 
-	Button btn_save;
-	EditText et_custname, et_custemail, et_custmobile;
+	Button btn_gotoprodadd;
+	ListView lv_prodview;
+	ArrayList<String> ProductArray = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_customer);
+		setContentView(R.layout.activity_view_product);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true); // to add back button on action bar
-		
-		btn_save = (Button) findViewById(R.id.btn_ca_savecust);
-		et_custemail = (EditText) findViewById(R.id.et_ca_custemail);
-		et_custmobile = (EditText) findViewById(R.id.et_ca_custmobile);
-		et_custname = (EditText) findViewById(R.id.et_ca_custname);
 
-		btn_save.setOnClickListener(new View.OnClickListener() {
+		lv_prodview = (ListView) findViewById(R.id.lv_prodview);
+		btn_gotoprodadd = (Button) findViewById(R.id.btn_goto_prodadd);
+		String userid = "0";
+		StringBuffer sb = new StringBuffer();
+		try {
+			// Attaching BufferedReader to the FileInputStream by the help of
+			// InputStreamReader
+			BufferedReader inputReader = new BufferedReader(
+					new InputStreamReader(openFileInput("khatabook_udata.txt")));
+			String inputString;
+			while ((inputString = inputReader.readLine()) != null) {
+				sb.append(inputString + "\n");
+			}
+
+			JSONObject data = new JSONObject(sb.toString());
+			userid = data.get("userid").toString();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		new GetProductForViewTask().execute(userid);
+
+		btn_gotoprodadd.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String name = et_custname.getText().toString();
-				String email = et_custemail.getText().toString();
-				String mobile = et_custmobile.getText().toString();
-				
-				String userid = "0";
-				StringBuffer sb = new StringBuffer();
-				try
-				{  
-		            //Attaching BufferedReader to the FileInputStream by the help of InputStreamReader  
-		            BufferedReader inputReader = new BufferedReader(new InputStreamReader(  
-		                    openFileInput("khatabook_udata.txt")));  
-		            String inputString;  	                    
-		            while ((inputString = inputReader.readLine()) != null) {  
-		                sb.append(inputString + "\n");  
-		            }
-		            
-		            JSONObject data = new JSONObject(sb.toString());
-		            userid = data.get("userid").toString();
-
-		        } 
-				catch (FileNotFoundException e)
-				{
-					e.printStackTrace();
-				} 
-				catch (IOException e) 
-				{  
-		            e.printStackTrace();  
-		        } catch (Exception e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}  
-				
-				if (Utils.Validate_Form_CustAdd(email, mobile, name))
-				{
-					new AddCustomerTask().execute(name,email,mobile,userid);
-				}
+				Intent loginIntent = new Intent(ViewProduct.this, AddProduct.class);
+				ViewProduct.this.startActivity(loginIntent);
+				ViewProduct.this.finish();
 			}
 		});
 
@@ -95,7 +81,7 @@ public class AddCustomer extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.add_customer, menu);
+		getMenuInflater().inflate(R.menu.view_product, menu);
 		return true;
 	}
 
@@ -104,7 +90,7 @@ public class AddCustomer extends Activity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			// app icon in action bar clicked; go home
-			Intent intent = new Intent(this, ViewCustomer.class);
+			Intent intent = new Intent(this, Dashboard.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
@@ -114,24 +100,21 @@ public class AddCustomer extends Activity {
 	}
 
 //////////////////////Our Custom Class for API Call ////////////
-	private class AddCustomerTask extends AsyncTask<String, String, String> {
+	private class GetProductForViewTask extends AsyncTask<String, String, String> {
 		String result;
 
 		@Override
 		protected String doInBackground(String... vb) {
 			JSONObject data = new JSONObject();
 			try {
-				URL url = new URL(Utils.get_BaseUrl() + "/customermaster-ins.php");
+				URL url = new URL(Utils.get_BaseUrl() + "/productmaster-forview.php");
 				HttpURLConnection con = (HttpURLConnection) url.openConnection();
 				con.setRequestMethod("POST");
 				con.setRequestProperty("Content-Type", "application/json; utf-8");
 				con.setRequestProperty("Accept", "application/json");
 				con.setDoOutput(true);
 
-				data.put("custname", vb[0]);
-				data.put("email", vb[1]);
-				data.put("mobile", vb[2]);
-				data.put("userid", vb[3]);
+				data.put("userid", vb[0]);
 
 				String jsonInputString = data.toString();
 				System.out.println(jsonInputString);
@@ -169,18 +152,21 @@ public class AddCustomer extends Activity {
 			try {
 				JSONObject res = new JSONObject(result);
 				System.out.println(res);
-				if (res.get("status").toString().equals("Success")) 
-				{					
-					
-					Intent loginIntent = new Intent(AddCustomer.this, ViewCustomer.class);
-					AddCustomer.this.startActivity(loginIntent);
-					AddCustomer.this.finish();
-				} else {
-					Toast.makeText(getApplicationContext(), "Unable to save Customer now", Toast.LENGTH_LONG).show();
+				JSONArray ja = res.getJSONArray("data");
+				System.out.println(ja);
+				for (int i = 0; i < ja.length(); i++) {
+					JSONObject item = ja.getJSONObject(i);
+
+					ProductArray.add(item.get("prodname").toString());
 				}
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+						R.layout.activity_listview_productview, ProductArray);
+
+				lv_prodview.setAdapter(adapter);
+
 			} catch (JSONException e) {
 
-//TODO Auto-generated catch block
+// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

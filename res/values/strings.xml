@@ -16,5 +16,7 @@
     <string name="action_example">Example action</string>
     <string name="title_activity_view_customer">ViewCustomer</string>
     <string name="title_activity_add_customer">AddCustomer</string>
+    <string name="title_activity_view_product">ViewProduct</string>
+    <string name="title_activity_add_product">AddProduct</string>
 
 </resources>

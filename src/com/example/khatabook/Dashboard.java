@@ -10,7 +10,7 @@ import android.widget.Button;
 
 public class Dashboard extends Activity {
 
-	Button btn_goto_custview;
+	Button btn_goto_custview,btn_goto_prodview;
 	
 	
 	@Override
@@ -18,6 +18,7 @@ public class Dashboard extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		btn_goto_custview = (Button)findViewById(R.id.btn_goto_customerview);
+		btn_goto_prodview = (Button)findViewById(R.id.btn_goto_productview);
 		
 		
 		btn_goto_custview.setOnClickListener(new View.OnClickListener() {
@@ -26,6 +27,17 @@ public class Dashboard extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Intent viewcustIntent = new Intent(Dashboard.this, ViewCustomer.class);
+				Dashboard.this.startActivity(viewcustIntent);
+				Dashboard.this.finish();
+			}
+		});
+		
+		btn_goto_prodview.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent viewcustIntent = new Intent(Dashboard.this, ViewProduct.class);
 				Dashboard.this.startActivity(viewcustIntent);
 				Dashboard.this.finish();
 			}

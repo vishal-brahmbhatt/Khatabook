@@ -35,40 +35,36 @@ public class ViewCustomer extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_customer);
-		lv_custview = (ListView)findViewById(R.id.lv_custview);
-		btn_gotocustadd =  (Button)findViewById(R.id.btn_goto_custadd);
+		getActionBar().setDisplayHomeAsUpEnabled(true); // to add back button on action bar
+		lv_custview = (ListView) findViewById(R.id.lv_custview);
+		btn_gotocustadd = (Button) findViewById(R.id.btn_goto_custadd);
 		String userid = "0";
 		StringBuffer sb = new StringBuffer();
-		try
-		{  
-            //Attaching BufferedReader to the FileInputStream by the help of InputStreamReader  
-            BufferedReader inputReader = new BufferedReader(new InputStreamReader(  
-                    openFileInput("khatabook_udata.txt")));  
-            String inputString;  	                    
-            while ((inputString = inputReader.readLine()) != null) {  
-                sb.append(inputString + "\n");  
-            }
-            
-            JSONObject data = new JSONObject(sb.toString());
-            userid = data.get("userid").toString();
+		try {
+			// Attaching BufferedReader to the FileInputStream by the help of
+			// InputStreamReader
+			BufferedReader inputReader = new BufferedReader(
+					new InputStreamReader(openFileInput("khatabook_udata.txt")));
+			String inputString;
+			while ((inputString = inputReader.readLine()) != null) {
+				sb.append(inputString + "\n");
+			}
 
-        } 
-		catch (FileNotFoundException e)
-		{
+			JSONObject data = new JSONObject(sb.toString());
+			userid = data.get("userid").toString();
+
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} 
-		catch (IOException e) 
-		{  
-            e.printStackTrace();  
-        } catch (Exception e)
-		{
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}  
+		}
 		new GetCustomerForViewTask().execute(userid);
-		
+
 		btn_gotocustadd.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -77,8 +73,7 @@ public class ViewCustomer extends Activity {
 				ViewCustomer.this.finish();
 			}
 		});
-		
-		
+
 	}
 
 	@Override
@@ -90,14 +85,16 @@ public class ViewCustomer extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			// app icon in action bar clicked; go home
+			Intent intent = new Intent(this, Dashboard.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 //////////////////////Our Custom Class for API Call ////////////
@@ -115,7 +112,7 @@ public class ViewCustomer extends Activity {
 				con.setRequestProperty("Accept", "application/json");
 				con.setDoOutput(true);
 
-				data.put("userid", vb[0]);				
+				data.put("userid", vb[0]);
 
 				String jsonInputString = data.toString();
 				System.out.println(jsonInputString);
@@ -135,14 +132,10 @@ public class ViewCustomer extends Activity {
 				result = response.toString();
 				return response.toString();
 
-			} 
-			catch (MalformedURLException e)
-			{
+			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -154,30 +147,24 @@ public class ViewCustomer extends Activity {
 		protected void onPostExecute(String aVoid) {
 
 			super.onPostExecute(aVoid);
-			try
-			{
+			try {
 				JSONObject res = new JSONObject(result);
 				System.out.println(res);
 				JSONArray ja = res.getJSONArray("data");
 				System.out.println(ja);
-				for(int i = 0 ; i < ja.length() ; i ++)
-				{
+				for (int i = 0; i < ja.length(); i++) {
 					JSONObject item = ja.getJSONObject(i);
-					
+
 					CustomerArray.add(item.get("custname").toString());
 				}
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), 
-				         R.layout.activitry_listview_customerview, CustomerArray);
-				
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+						R.layout.activitry_listview_customerview, CustomerArray);
+
 				lv_custview.setAdapter(adapter);
 
-					   
-				
-				
-			}
-			catch (JSONException e) {
-				
-				//TODO Auto-generated catch block
+			} catch (JSONException e) {
+
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

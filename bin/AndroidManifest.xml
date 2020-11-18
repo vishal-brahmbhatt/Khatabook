@@ -45,6 +45,14 @@
             android:name=".AddCustomer"
             android:label="@string/title_activity_add_customer" >
         </activity>
+        <activity
+            android:name=".ViewProduct"
+            android:label="@string/title_activity_view_product" >
+        </activity>
+        <activity
+            android:name=".AddProduct"
+            android:label="@string/title_activity_add_product" >
+        </activity>
     </application>
 
 </manifest>

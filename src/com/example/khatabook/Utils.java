@@ -41,6 +41,11 @@ public class Utils
 		return name!=null && mobile != null && isEmailValid(email);
 	}
 	
+	public static Boolean Validate_Form_ProdAdd(String uom,String rop,String prodname,String ros)
+	{
+		return prodname !=null && uom !=null && rop !=null && ros !=null;
+	}
+	
 //	public static String GetUserIDFromLocal()
 //	{
 //		String userid = "0";
