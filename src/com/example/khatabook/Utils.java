@@ -1,7 +1,14 @@
 package com.example.khatabook;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.OutputStream;
+
+import org.json.JSONObject;
 
 public class Utils 
 {
@@ -28,5 +35,46 @@ public class Utils
 	{
 		return password!=null && isEmailValid(email);
 	}
+	
+	public static Boolean Validate_Form_CustAdd(String email,String mobile,String name)
+	{
+		return name!=null && mobile != null && isEmailValid(email);
+	}
+	
+//	public static String GetUserIDFromLocal()
+//	{
+//		String userid = "0";
+//		StringBuffer sb = new StringBuffer();
+//		try
+//		{  
+//            //Attaching BufferedReader to the FileInputStream by the help of InputStreamReader  
+//            BufferedReader inputReader = new BufferedReader(new InputStreamReader(  
+//                    openFileInput("khatabook_udata.txt")));  
+//            String inputString;  	                    
+//            while ((inputString = inputReader.readLine()) != null) {  
+//                sb.append(inputString + "\n");  
+//            }
+//            
+//            JSONObject data = new JSONObject(sb.toString());
+//            userid = data.get("userid").toString();
+//
+//        } 
+//		catch (FileNotFoundException e)
+//		{
+//			e.printStackTrace();
+//		} 
+//		catch (IOException e) 
+//		{  
+//            e.printStackTrace();  
+//        } catch (Exception e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		finally
+//		{
+//			return userid;
+//		}
+//	}
 }
 
