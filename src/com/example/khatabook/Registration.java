@@ -138,8 +138,8 @@ public class Registration extends Activity {
 					con.setRequestProperty("Accept", "application/json");
 					con.setDoOutput(true);
 					
-					data.put("shopname",vb[0]);
-					data.put("name",vb[1]);
+					data.put("shopname",vb[0]); // 0 because we had passed shopname at 0th index
+					data.put("name",vb[1]); // 1 because we had passed name at 1st index
 					data.put("emailid",vb[2]);
 					data.put("address"," ");
 					data.put("gstno"," ");

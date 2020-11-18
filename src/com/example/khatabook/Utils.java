@@ -23,5 +23,10 @@ public class Utils
 	{
 		return name!=null && shopname != null && isEmailValid(email);
 	}
+	
+	public static Boolean Validate_Form_Login(String email,String password)
+	{
+		return password!=null && isEmailValid(email);
+	}
 }
 
