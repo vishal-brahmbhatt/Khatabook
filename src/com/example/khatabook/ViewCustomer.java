@@ -1,42 +1,22 @@
 package com.example.khatabook;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-public class Dashboard extends Activity {
+public class ViewCustomer extends Activity {
 
-	Button btn_goto_custview;
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_dashboard);
-		btn_goto_custview = (Button)findViewById(R.id.btn_goto_customerview);
-		
-		
-		btn_goto_custview.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent viewcustIntent = new Intent(Dashboard.this, ViewCustomer.class);
-				Dashboard.this.startActivity(viewcustIntent);
-				Dashboard.this.finish();
-			}
-		});
-		
+		setContentView(R.layout.activity_view_customer);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.dashboard, menu);
+		getMenuInflater().inflate(R.menu.view_customer, menu);
 		return true;
 	}
 

@@ -1,6 +1,9 @@
 package com.example.khatabook;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -11,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -144,7 +148,27 @@ public class Login extends Activity {
 			super.onPostExecute(aVoid);
 			try {
 				JSONObject res = new JSONObject(result);
-				if (res.get("status").toString().equals("Success")) {
+				if (res.get("status").toString().equals("Success")) 
+				{
+					FileOutputStream fos;
+					try {  
+						File file = new File("khatabook_udata.txt");
+						if(file.exists())    
+						{
+							file.delete();
+						}
+						
+	                    fos = openFileOutput("khatabook_udata.txt", Context.MODE_PRIVATE);  
+	                    //default mode is PRIVATE, can be APPEND etc.  
+	                    fos.write(result.toString().getBytes());  
+	                    fos.close();  	  
+	  
+	                }   
+	                catch (IOException e) 
+					{
+	                	e.printStackTrace();
+	                }  
+					
 					Intent loginIntent = new Intent(Login.this, Dashboard.class);
 					Login.this.startActivity(loginIntent);
 					Login.this.finish();

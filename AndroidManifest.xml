@@ -37,6 +37,10 @@
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard" >
         </activity>
+        <activity
+            android:name=".ViewCustomer"
+            android:label="@string/title_activity_view_customer" >
+        </activity>
     </application>
 
 </manifest>
